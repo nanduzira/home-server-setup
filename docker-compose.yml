@@ -1,0 +1,54 @@
+---
+version: "3"
+services:
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - TZ=Asia/Kolkata
+    volumes:
+      - ./heimdall/config:/config
+    # ports:
+    #   - 5001:443
+    restart: unless-stopped
+  myst:
+    image: mysteriumnetwork/myst:latest
+    container_name: myst
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./myst/data:/var/lib/mysterium-node
+    # ports:
+    #   - 5002:4449
+    expose:
+      - 4449
+    restart: unless-stopped
+    command: ["service", "--agreed-terms-and-conditions"]
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - TZ=Asia/Kolkata
+      - URL=nanduzira.dev
+      - VALIDATION=http
+      - SUBDOMAINS=heimdall,myst,nextcloud,plex #optional
+      - CERTPROVIDER=zerossl #optional
+      - DNSPLUGIN=cloudflare #optional
+      - PROPAGATION= #optional
+      - DUCKDNSTOKEN= #optional
+      - EMAIL=me@nanduzira.dev #optional
+      - ONLY_SUBDOMAINS=false #optional
+      - EXTRA_DOMAINS= #optional
+      - STAGING=false #optional
+    volumes:
+      - ./swag/config:/config
+    ports:
+      - 443:443
+      - 80:80 #optional
+    restart: unless-stopped
