@@ -4,7 +4,7 @@
 Add the proper `HOME_SERVER_BASE_DOMAIN` value(your base domain to host the server).
 
 ## Start the server
-`docker compose --env-file .env -d up`
+`docker compose --env-file .env up -d`
 
 ## Stop the server
 `docker compose down --remove-orphans`
