@@ -33,7 +33,8 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Asia/Kolkata
-      - NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.nanduzira.dev
+    env_file:
+      - ./nextcloud/.env
     volumes:
       - ./nextcloud/config:/config
       - ./nextcloud/data:/data
@@ -49,17 +50,17 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Asia/Kolkata
-      - URL=nanduzira.dev
       - VALIDATION=http
       - SUBDOMAINS=heimdall,myst,nextcloud,plex #optional
       - CERTPROVIDER=zerossl #optional
       - DNSPLUGIN=cloudflare #optional
       - PROPAGATION= #optional
       - DUCKDNSTOKEN= #optional
-      - EMAIL=me@nanduzira.dev #optional
       - ONLY_SUBDOMAINS=false #optional
       - EXTRA_DOMAINS= #optional
       - STAGING=false #optional
+    env_file:
+      - ./swag/.env
     volumes:
       - ./swag/config:/config
     ports:
