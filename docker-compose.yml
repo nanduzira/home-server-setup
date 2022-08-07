@@ -5,8 +5,8 @@ services:
     image: lscr.io/linuxserver/heimdall:latest
     container_name: heimdall
     environment:
-      - PUID=1001
-      - PGID=1001
+      - PUID=1000
+      - PGID=1000
       - TZ=Asia/Kolkata
     volumes:
       - ./heimdall/config:/config
@@ -26,14 +26,28 @@ services:
       - 4449
     restart: unless-stopped
     command: ["service", "--agreed-terms-and-conditions"]
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+      - NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.nanduzira.dev
+    volumes:
+      - ./nextcloud/config:/config
+      - ./nextcloud/data:/data
+    # ports:
+    #   - 5003:443
+    restart: unless-stopped
   swag:
     image: lscr.io/linuxserver/swag:latest
     container_name: swag
     cap_add:
       - NET_ADMIN
     environment:
-      - PUID=1001
-      - PGID=1001
+      - PUID=1000
+      - PGID=1000
       - TZ=Asia/Kolkata
       - URL=nanduzira.dev
       - VALIDATION=http
