@@ -1,4 +1,3 @@
----
 version: "3"
 services:
   heimdall:
@@ -40,6 +39,20 @@ services:
       - ./nextcloud/data:/data
     # ports:
     #   - 5003:443
+    restart: unless-stopped
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    env_file:
+      - ./code-server/.env
+    volumes:
+      - ./code-server/config:/config
+    # ports:
+    #   - 5004:8443
     restart: unless-stopped
   swag:
     image: lscr.io/linuxserver/swag:latest

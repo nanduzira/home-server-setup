@@ -3,3 +3,4 @@ swag/config
 myst/data
 nextcloud/config
 nextcloud/data
+.env
