@@ -25,6 +25,24 @@ services:
       - 4449
     restart: unless-stopped
     command: ["service", "--agreed-terms-and-conditions"]
+  mariadb:
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: mariadb
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    env_file:
+      - ./mariadb/.env
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - ./mariadb/config:/config
+    # ports:
+    #   - 5003:3306
+    restart: unless-stopped
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
@@ -34,11 +52,14 @@ services:
       - TZ=Asia/Kolkata
     env_file:
       - ./nextcloud/.env
+    depends_on:
+      mariadb:
+        condition: service_healthy
     volumes:
       - ./nextcloud/config:/config
       - ./nextcloud/data:/data
     # ports:
-    #   - 5003:443
+    #   - 5004:443
     restart: unless-stopped
   code-server:
     image: lscr.io/linuxserver/code-server:latest
@@ -52,7 +73,7 @@ services:
     volumes:
       - ./code-server/config:/config
     # ports:
-    #   - 5004:8443
+    #   - 5005:8443
     restart: unless-stopped
   swag:
     image: lscr.io/linuxserver/swag:latest

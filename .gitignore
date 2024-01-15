@@ -1,6 +1,7 @@
 heimdall/config
-swag/config
+mariadb/config
 myst/data
 nextcloud/config
 nextcloud/data
+swag/config
 .env
