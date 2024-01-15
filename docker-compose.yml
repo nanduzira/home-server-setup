@@ -85,7 +85,7 @@ services:
       - PGID=1000
       - TZ=Asia/Kolkata
       - VALIDATION=http
-      - SUBDOMAINS=heimdall,myst,nextcloud,plex #optional
+      - SUBDOMAINS=code-server,heimdall,myst,nextcloud #plex #optional
       - CERTPROVIDER=zerossl #optional
       - DNSPLUGIN=cloudflare #optional
       - PROPAGATION= #optional
