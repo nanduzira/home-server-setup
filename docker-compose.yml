@@ -1,8 +1,9 @@
-version: "3"
 services:
   heimdall:
     image: lscr.io/linuxserver/heimdall:latest
     container_name: heimdall
+    profiles:
+      - tower
     environment:
       - PUID=1000
       - PGID=1000
@@ -15,6 +16,8 @@ services:
   myst:
     image: mysteriumnetwork/myst:latest
     container_name: myst
+    profiles:
+      - tower
     cap_add:
       - NET_ADMIN
     volumes:
@@ -28,6 +31,8 @@ services:
   mariadb:
     image: lscr.io/linuxserver/mariadb:latest
     container_name: mariadb
+    profiles:
+      - tower
     environment:
       - PUID=1000
       - PGID=1000
@@ -46,6 +51,8 @@ services:
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
+    profiles:
+      - tower
     environment:
       - PUID=1000
       - PGID=1000
@@ -64,6 +71,8 @@ services:
   code-server:
     image: lscr.io/linuxserver/code-server:latest
     container_name: code-server
+    profiles:
+      - tower
     environment:
       - PUID=1000
       - PGID=1000
@@ -75,9 +84,50 @@ services:
     # ports:
     #   - 5005:8443
     restart: unless-stopped
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    profiles:
+      - black-tower
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+    env_file:
+      - ./jellyfin/.env
+    volumes:
+      - ./jellyfin/library:/config
+      - ./jellyfin/tvseries:/data/tvshows
+      - ./jellyfin/movies:/data/movies
+    devices:  # for hardware acceleration in RPI
+      - /dev/vcsm-cma:/dev/vcsm-cma
+      - /dev/vchiq:/dev/vchiq
+      - /dev/video10:/dev/video10
+      - /dev/video11:/dev/video11
+      - /dev/video12:/dev/video12
+      - /dev/video13:/dev/video13
+      - /dev/video14:/dev/video14
+      - /dev/video15:/dev/video15
+      - /dev/video16:/dev/video16
+      - /dev/video18:/dev/video18
+      - /dev/video19:/dev/video19
+      - /dev/video20:/dev/video20
+      - /dev/video21:/dev/video21
+      - /dev/video22:/dev/video22
+      - /dev/video23:/dev/video23
+      - /dev/video31:/dev/video31
+      - /dev/dri:/dev/dri
+    # ports:
+    #   - 8096:8096
+    #   - 8920:8920  # optional
+    #   - 7359:7359/udp  # optional
+    #   - 1900:1900/udp  # optional
+    restart: unless-stopped
   swag:
     image: lscr.io/linuxserver/swag:latest
     container_name: swag
+    profiles:
+      - tower
     cap_add:
       - NET_ADMIN
     environment:
@@ -85,19 +135,19 @@ services:
       - PGID=1000
       - TZ=Asia/Kolkata
       - VALIDATION=http
-      - SUBDOMAINS=code-server,heimdall,myst,nextcloud #plex #optional
-      - CERTPROVIDER=zerossl #optional
-      - DNSPLUGIN=cloudflare #optional
-      - PROPAGATION= #optional
-      - DUCKDNSTOKEN= #optional
-      - ONLY_SUBDOMAINS=false #optional
-      - EXTRA_DOMAINS= #optional
-      - STAGING=false #optional
+      - SUBDOMAINS=code-server,heimdall,myst,nextcloud  # plex  # optional
+      - CERTPROVIDER=zerossl  # optional
+      - DNSPLUGIN=cloudflare  # optional
+      - PROPAGATION=  # optional
+      - DUCKDNSTOKEN=  # optional
+      - ONLY_SUBDOMAINS=false  # optional
+      - EXTRA_DOMAINS=  # optional
+      - STAGING=false  # optional
     env_file:
       - ./swag/.env
     volumes:
       - ./swag/config:/config
     ports:
       - 443:443
-      - 80:80 #optional
+      - 80:80  # optional
     restart: unless-stopped
