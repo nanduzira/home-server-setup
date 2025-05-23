@@ -1,0 +1,35 @@
+key:
+  encryption: I4bA2iaxgI6XCGX7yTTMcCxyRPmEzVfZd2EfOPIS5yQ=
+  hash: idyrfgz8bZLZX9La8fIl3erbeRh/e6pX6M094ZY/A5+HdG8VVyybX7masgKWHznrgLyaqjtFTtpyBlmCj6hBtA==
+
+jwt:
+  secret: -gi-mmk2GU3Bt9cuojGXSwxWfZcdgM1-CDoEYg6NTUs=
+
+db:
+  host: postgres
+  port: 5432
+  name: ente_db
+  user: pguser
+  password: DdIZkthzFLE8jdPOKXpUu4LQ1tHO
+
+s3:
+  are_local_buckets: true
+  b2-eu-cen:
+    key: minio-user-2USORyC7
+    secret: fV+hB2FvnlLNH54fzVTvIa+ZlANS
+    endpoint: localhost:3200
+    region: eu-central-2
+    bucket: b2-eu-cen
+  wasabi-eu-central-2-v3:
+    key: minio-user-2USORyC7
+    secret: fV+hB2FvnlLNH54fzVTvIa+ZlANS
+    endpoint: localhost:3200
+    region: eu-central-2
+    bucket: wasabi-eu-central-2-v3
+    compliance: false
+  scw-eu-fr-v3:
+    key: minio-user-2USORyC7
+    secret: fV+hB2FvnlLNH54fzVTvIa+ZlANS
+    endpoint: localhost:3200
+    region: eu-central-2
+    bucket: scw-eu-fr-v3
