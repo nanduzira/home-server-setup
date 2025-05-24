@@ -52,6 +52,18 @@ Add the proper `HOME_SERVER_BASE_DOMAIN` value(your base domain to host the serv
 - ToDo:
   - ente.io
 
+## Volumes used by the Services
+
+| Name               | Type | Service     | Local path (if any)    | Read Only | Description                  |
+| ------------------ | ---- | ----------- | ---------------------- | --------- | ---------------------------- |
+| Heimdall (config)  | Bind | heimdall    | `./heimdall/config`    | No        | Heimdall config path         |
+| Myst (data)        | Bind | myst        | `./myst/data`          | No        | Myst data path               |
+| MariaDB            | Bind | mariadb     | `./mariadb/config`     | No        | MariaDB data/config path     |
+| Nextcloud (config) | Bind | nextcloud   | `./nextcloud/config`   | No        | Nextcloud config path        |
+| Nextcloud (data)   | Bind | nextcloud   | `./nextcloud/data`     | No        | Nextcloud data path          |
+| Code Server        | Bind | code-server | `./code-server/config` | No        | Code Server config/data path |
+| Swag               | Bind | swag        | `./swag/config`        | No        | Swag config/data path        |
+
 ## Architecture
 
 ```mermaid
