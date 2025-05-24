@@ -1,8 +1,29 @@
+# code-server config and data path
 code-server/config
+
+# heimdall config and data path
 heimdall/config
+
+# mariadb config and data path
 mariadb/config
+
+# myst data path
 myst/data
+
+# nextcloud config path
 nextcloud/config
+
+# nextcloud data path
 nextcloud/data
+
+# quickstart/my-immich library data path
+quickstart/my-immich/library
+
+# quickstart/my-immich postgres data path
+quickstart/my-immich/postgres
+
+# swag config and data path
 swag/config
+
+# .env file
 .env
