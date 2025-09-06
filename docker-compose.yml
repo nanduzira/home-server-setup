@@ -1,4 +1,3 @@
-version: "3"
 services:
   heimdall:
     image: lscr.io/linuxserver/heimdall:latest
@@ -101,3 +100,16 @@ services:
       - 443:443
       - 80:80 #optional
     restart: unless-stopped
+  twingate-connector:
+    container_name: twingate-connector-${TWINGATE_CONNECTOR_TWINGATE_LABEL_HOSTNAME}
+    restart: always
+    image: twingate/connector:1
+    pull_policy: always
+    profiles:
+      - black-tower
+      - tower-ii
+      - twingate-connector
+    env_file:
+      - ./twingate-connector/.env
+    sysctls:
+      net.ipv4.ping_group_range: "0 2147483647"
