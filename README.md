@@ -48,7 +48,6 @@ Add the proper `HOME_SERVER_BASE_DOMAIN` value(your base domain to host the serv
 - Deployed:
   - mariadb
   - nextcloud
-  - jellyfin
 - ToDo:
   - ente.io
 
@@ -85,7 +84,6 @@ architecture-beta
     service blackTowerSD(disk)[Black Tower microSD] in blackTower
     service enteIO(server)[Ente IO] in blackTower
     service firefly(server)[firefly] in blackTower
-    service jellyfin(server)[Jellyfin] in blackTower
     service nextcloud(server)[Nextcloud] in blackTower
     service mariadb(database)[Mariadb] in blackTower
 
@@ -93,13 +91,11 @@ architecture-beta
     junction towerJunction12
 
     blackTowerSD:L --> R:mariadb
-    blackTowerSD:T --> B:jellyfin
     blackTowerSD:R --> L:enteIO
 
     mariadb:L --> R:nextcloud
     mariadb:T --> B:firefly
 
     blackTowerHDD:L --> R:nextcloud
-    blackTowerHDD:T --> B:jellyfin
     blackTowerHDD:T --> L:enteIO
 ```
