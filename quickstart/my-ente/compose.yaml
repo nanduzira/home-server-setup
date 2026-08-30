@@ -1,6 +1,7 @@
+name: my-ente
 services:
   museum:
-    image: ghcr.io/ente-io/server
+    image: ghcr.io/ente/server
     ports:
       - 8080:8080 # API
     depends_on:
@@ -9,6 +10,12 @@ services:
     volumes:
       - ./museum.yaml:/museum.yaml:ro
       - ./data:/data:ro
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/ping"]
+      interval: 60s
+      timeout: 5s
+      retries: 3
+      start_period: 120s
 
   # Resolve "localhost:3200" in the museum container to the minio container.
   socat:
@@ -18,26 +25,30 @@ services:
     command: "TCP-LISTEN:3200,fork,reuseaddr TCP:minio:3200"
 
   web:
-    image: ghcr.io/ente-io/web
-    # Uncomment what you need to tweak.
+    image: ghcr.io/ente/web
     ports:
       - 3000:3000 # Photos web app
       # - 3001:3001 # Accounts
       - 3002:3002 # Public albums
       # - 3003:3003 # Auth
       # - 3004:3004 # Cast
-    # environment:
-    #   ENTE_API_ORIGIN: http://localhost:8080
-    #   ENTE_ALBUMS_ORIGIN: https://localhost:3002
+      # - 3005:3005 # Share
+      # - 3006:3006 # Embed
+      # - 3008:3008 # Paste
+      # - 3009:3009 # Locker
+      # - 3010:3010 # Memories
+    # Set this to your custom museum URL, if any.
+    environment:
+      ENTE_API_ORIGIN: http://localhost:8080
 
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_USER: pguser
-      POSTGRES_PASSWORD: DdIZkthzFLE8jdPOKXpUu4LQ1tHO
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ente_db
     healthcheck:
-      test: pg_isready -q -d ente_db -U pguser
+      test: pg_isready -q -d ente_db -U ${POSTGRES_USER}
       start_period: 40s
       start_interval: 1s
     volumes:
@@ -47,18 +58,18 @@ services:
     image: minio/minio
     ports:
       - 3200:3200 # MinIO API
+      # Uncomment to enable the MinIO web UI.
+      # - 3201:3201
     environment:
-      MINIO_ROOT_USER: minio-user-2USORyC7
-      MINIO_ROOT_PASSWORD: fV+hB2FvnlLNH54fzVTvIa+ZlANS
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     command: server /data --address ":3200" --console-address ":3201"
     volumes:
       - minio-data:/data
     post_start:
       - command: |
           sh -c '
-          #!/bin/sh
-
-          while ! mc config host add h0 http://minio:3200 minio-user-2USORyC7 fV+hB2FvnlLNH54fzVTvIa+ZlANS 2>/dev/null
+          while ! mc alias set h0 http://minio:3200 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD} 2>/dev/null
           do
             echo "Waiting for minio..."
             sleep 0.5

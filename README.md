@@ -49,7 +49,7 @@ Modify the proper `HOME_SERVER_BASE_DOMAIN` value(your base domain to host the s
 - Planned:
   - ente.io
 
-### Services in `tower` server
+### Services in `tower-ii` server
 
 - Deployed:
   - twingate-connector
